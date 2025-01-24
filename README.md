@@ -13,7 +13,7 @@ dependencies:
   multi_value_listenable_builder:
     git:
       url: https://github.com/prcryx/multi-value-listenable-builder.git
-      ref: features/transform_builder # branch name
+      ref: main # branch name
 ```
 
 - Import `package:multi_value_listenable_builder/multi_value_listenable_builder.dart` in required files.
