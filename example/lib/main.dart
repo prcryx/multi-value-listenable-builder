@@ -28,6 +28,7 @@ class _DemoState extends State<Demo> {
     ValueNotifier(255), // Green
     ValueNotifier(255), // Blue
   ];
+  ValueNotifier<String> compositionNotifier = ValueNotifier('');
 
   @override
   Widget build(BuildContext context) {
@@ -39,39 +40,69 @@ class _DemoState extends State<Demo> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50.0),
-              child: MultiValueListenableBuilder(
-                valueListenables: _argb,
-                builder: (context, values, child) {
-                  return Container(
-                    decoration: ShapeDecoration(
-                      shadows: [BoxShadow(blurRadius: 5)],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 16,
+              children: [
+                /// Usecase 1
+                MultiValueListenableBuilder(
+                  valueListenables: _argb,
+                  builder: (context, values, child) {
+                    return Container(
+                      decoration: ShapeDecoration(
+                        shadows: [BoxShadow(blurRadius: 5)],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        color: Color.fromARGB(
+                          values.elementAt(0), // Alpha
+                          values.elementAt(1), // Red
+                          values.elementAt(2), // Green
+                          values.elementAt(3), // Blue
+                        ),
                       ),
-                      color: Color.fromARGB(
-                        values.elementAt(0), // Alpha
-                        values.elementAt(1), // Red
-                        values.elementAt(2), // Green
-                        values.elementAt(3), // Blue
-                      ),
-                    ),
-                    height: 200,
-                    width: 200,
-                  );
-                },
-              ),
+                      height: 200,
+                      width: 200,
+                    );
+                  },
+                ),
+
+                /// Usecase 2
+                MultiValueListenableBuilder<String>(
+                    valueListenables: _argb,
+                    transformedListenable: compositionNotifier,
+                    transformer: (values) {
+                      return "Alpha: ${values[0].toString()}\n Red: ${values[1].toString()}\n Green: ${values[2].toString()}\n Blue: ${values[3].toString()}";
+                    },
+                    builderWhenTransformed: (context, v, child) {
+                      return Container(
+                        decoration: ShapeDecoration(
+                          shadows: [BoxShadow(blurRadius: 5)],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: Center(child: Text(v)),
+                        height: 200,
+                        width: 200,
+                      );
+                    })
+              ],
             ),
             Column(
+              spacing: 2,
               children: [0, 1, 2, 3]
                   .map(
                     (index) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          _labels.elementAt(index),
-                          style: TextStyle(fontSize: 20.0),
+                        Container(
+                          width: 200,
+                          child: Text(
+                            _labels.elementAt(index),
+                          ),
                         ),
                         ValueListenableBuilder<int>(
                           valueListenable: _argb.elementAt(index),

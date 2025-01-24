@@ -6,7 +6,15 @@ A widget to listen to multiple [ValueListenable](https://api.flutter.dev/flutter
 
 ## Usage
 
-- Add the multi_value_listenable_builder as a dependency in your project.
+- Add the multi_value_listenable_builder as a dependency in your project with url as follows:
+
+```yaml
+dependencies:
+  multi_value_listenable_builder:
+    git:
+      url: https://github.com/prcryx/multi-value-listenable-builder.git
+      ref: features/transform_builder # branch name
+```
 
 - Import `package:multi_value_listenable_builder/multi_value_listenable_builder.dart` in required files.
 
